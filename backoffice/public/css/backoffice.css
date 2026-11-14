@@ -1,0 +1,73 @@
+/* Tema do backoffice: a mesma paleta da aplicação pública */
+:root {
+  --verde: #2F5D3A;
+  --verde-escuro: #1F2A1F;
+  --verde-claro: #DDE8D6;
+  --terracota: #A94A26;
+  --terracota-claro: #F5DDD0;
+  --ambar: #C98A1B;
+  --ambar-claro: #FAEFD0;
+  --fundo: #F5F1E8;
+  --tinta: #1F2A1F;
+  --tinta-suave: #5E665B;
+  --linha: #E4DDCD;
+  --bs-body-bg: var(--fundo);
+  --bs-body-color: var(--tinta);
+  --bs-link-color-rgb: 47, 93, 58;
+  --bs-link-hover-color-rgb: 36, 72, 45;
+  --bs-border-color: var(--linha);
+}
+
+h1, h2, .marca { font-family: Georgia, "Times New Roman", serif; font-weight: 600; }
+a { text-decoration: none; }
+.texto-secundario { color: var(--tinta-suave); }
+
+.btn-success { --bs-btn-bg: var(--verde); --bs-btn-border-color: var(--verde); --bs-btn-hover-bg: #24482D; --bs-btn-hover-border-color: #24482D; --bs-btn-active-bg: #24482D; }
+.btn-outline-success { --bs-btn-color: var(--verde); --bs-btn-border-color: var(--verde); --bs-btn-hover-bg: var(--verde); --bs-btn-hover-border-color: var(--verde); }
+.page-link { color: var(--verde); }
+.active > .page-link { background: var(--verde); border-color: var(--verde); }
+
+/* Estrutura Mobile First: menu no topo no telemóvel, barra lateral a partir de 992 px */
+.estrutura { min-height: 100vh; }
+.lateral { background: var(--verde-escuro); color: #fff; padding: 1rem; }
+.lateral .marca { color: #fff; font-size: 1.1rem; }
+.lateral .sub { font-size: .6875rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .6); }
+.lateral .nav-link { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .55rem .75rem; border-radius: .6rem; color: rgba(255, 255, 255, .85); font-size: .9375rem; }
+.lateral .nav-link:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.lateral .nav-link.active { background: var(--verde); color: #fff; font-weight: 600; }
+.lateral .contador { min-width: 1.4rem; padding: 0 .4rem; border-radius: 1rem; background: var(--terracota); font-size: .7rem; font-weight: 700; line-height: 1.4rem; text-align: center; }
+.conteudo { padding: 1.25rem 1rem 3rem; min-width: 0; }
+
+@media (min-width: 992px) {
+  .estrutura { display: grid; grid-template-columns: 15rem minmax(0, 1fr); }
+  .lateral { position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.5rem 1rem; }
+  .lateral .collapse { display: block !important; }
+  .conteudo { padding: 2rem 2.5rem 3rem; }
+}
+
+.cartao { background: #fff; border: 1px solid var(--linha); border-radius: 1rem; padding: 1rem 1.25rem; }
+.indicadores { display: grid; gap: .75rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1200px) { .indicadores { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; } }
+.indicador small { display: block; color: var(--tinta-suave); font-size: .75rem; }
+.indicador strong { display: block; font-size: 1.6rem; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.indicador .nota { font-size: .75rem; color: var(--terracota); }
+.indicador .nota-ok { color: var(--verde); }
+.colunas { display: grid; gap: 1rem; }
+@media (min-width: 1200px) { .colunas { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; } }
+
+.avatar { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: .6rem; background: var(--terracota); color: #fff; font-size: .8rem; font-weight: 700; }
+.item { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; padding: .85rem 0; border-top: 1px solid var(--linha); }
+.item:first-of-type { border-top: 0; }
+.item > .corpo { flex: 1 1 14rem; min-width: 0; }
+
+.estado { display: inline-block; padding: .2rem .65rem; border-radius: 2rem; font-size: .75rem; font-weight: 700; text-transform: capitalize; white-space: nowrap; }
+.estado-pendente, .estado-agendado, .estado-por-validar { background: var(--terracota-claro); color: var(--terracota); }
+.estado-confirmada { background: var(--ambar-claro); color: #7a5410; }
+.estado-pronta, .estado-ativo, .estado-validado, .estado-visivel { background: var(--verde-claro); color: #24482D; }
+.estado-entregue, .estado-terminado, .estado-oculta { background: var(--fundo); color: var(--tinta-suave); border: 1px solid var(--linha); }
+
+.table { --bs-table-bg: transparent; font-size: .875rem; vertical-align: middle; }
+.table th { font-size: .6875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--tinta-suave); white-space: nowrap; }
+.filtros .btn { border-radius: 2rem; background: #fff; border-color: var(--linha); color: var(--tinta); font-size: .875rem; }
+.filtros .btn.ativo { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+.entrada { max-width: 26rem; margin: 10vh auto 0; }
