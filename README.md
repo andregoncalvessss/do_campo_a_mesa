@@ -5,9 +5,9 @@ Trabalho prático individual de **Desenvolvimento Web e para a Cloud** (Mestrado
 
 | | |
 |---|---|
-| Aplicação (SPA) | _por publicar — preencher depois do Passo 8_ |
-| API | _por publicar_ |
-| Documentação Swagger | _por publicar_ (`/api-docs`) |
+| Aplicação (SPA) | https://dcm-web-333342.azurewebsites.net |
+| API | https://dcm-api-333342.azurewebsites.net/api/health |
+| Documentação Swagger | https://dcm-api-333342.azurewebsites.net/api-docs |
 | Relatório | [docs/relatorio.md](docs/relatorio.md) |
 
 ## Arquitetura
@@ -157,13 +157,23 @@ Os ficheiros `.env` nunca vão para o Git (ver `.gitignore`); em produção os s
 
 ## Deployment (Azure)
 
-Os comandos estão em [deploy.sh](deploy.sh), pela ordem do guia: resource group, App Service (API, com WebSockets e HTTPS),
-Storage account (imagens) e Static Web Apps (SPA). Antes de publicar:
+Publicado com [deploy.sh](deploy.sh) (Azure CLI), na região Denmark East:
 
-1. No Atlas, autorizar o acesso a partir da Cloud (Network Access).
-2. Definir os nomes e segredos no início do `deploy.sh`.
-3. Em `web/.env.production`, pôr o URL público da API.
-4. Depois de publicar a SPA, atualizar `CLIENT_URL` na API e os URLs no topo deste README.
+| Recurso | Serviço | Para quê |
+|---|---|---|
+| `dcm-api-…` | App Service (Linux, B1, Node 22) | API REST + Socket.io, com WebSockets e HTTPS obrigatório |
+| `dcm-web-…` | App Service, no mesmo plano | SPA (ficheiros estáticos do `dist/`, com fallback para `index.html`) |
+| `dcmimagens…` | Storage account, container `produtos` | Fotografias dos produtos |
+| MongoDB Atlas (M0) | fora do Azure | Base de dados |
+
+Para repetir o deploy (depois de `az login`): `./deploy.sh`. O script lê a `MONGODB_URI` do `api/.env`, gera um
+`JWT_SECRET` de produção, grava os segredos nas App Settings e publica a API e a SPA. No Atlas, o acesso de rede tem
+de permitir a Cloud (Network Access).
+
+A SPA não usa o Azure Static Web Apps porque esse serviço só existe em regiões que a subscrição Azure for Students
+não permite; é servida por uma segunda Web App no mesmo plano, sem custo adicional.
+
+No fim do semestre: `az group delete -n dcm-rg`.
 
 ## Ferramentas e IA
 

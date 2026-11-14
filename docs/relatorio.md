@@ -2,7 +2,7 @@
 
 **Desenvolvimento Web e para a Cloud** · Mestrado em Engenharia Informática · IPVC – ESTG · 2026/2027
 **Autor:** _(nome e número de estudante)_
-**Repositório:** _(URL)_ · **Aplicação:** _(URL público)_ · **Swagger UI:** _(URL público)/api-docs_
+**Repositório:** https://github.com/andregoncalvessss/do_campo_a_mesa · **Aplicação:** https://dcm-web-333342.azurewebsites.net · **Swagger UI:** https://dcm-api-333342.azurewebsites.net/api-docs
 
 > Nota para a entrega: os campos em _itálico entre parênteses_ ficam por preencher (identificação, URLs públicos
 > depois do Passo 8, capturas de ecrã). As secções 9 e 10 devem ser revistas pelo autor, porque descrevem a sua
@@ -114,7 +114,7 @@ _(Inserir capturas: catálogo a 390 px e a 1360 px; sala de leilão; painel do p
 
 ## 4. API REST
 
-Documentação interativa: _(URL público)/api-docs_ (em desenvolvimento, `http://localhost:3000/api-docs`).
+Documentação interativa: https://dcm-api-333342.azurewebsites.net/api-docs (em desenvolvimento, `http://localhost:3000/api-docs`).
 
 | Verbo | URI | Quem | Sucesso | Erros |
 |---|---|---|---|---|
@@ -209,7 +209,7 @@ O texto de pesquisa é escapado antes de ir para o `$regex`, para um utilizador 
 | Erros sem detalhes | Os 500 devolvem só "Erro interno" | `middleware/errorHandler.js` |
 | Sockets autenticados | `io.use()` valida o mesmo JWT antes de aceitar a ligação | `sockets/index.js` |
 | Segredos fora do código | `.env` (no `.gitignore`); App Settings na Cloud; a API não arranca sem `JWT_SECRET` | `.env.example`, `server.js` |
-| HTTPS | Obrigatório em produção (`--https-only`); fornecido pela plataforma | `deploy.sh` |
+| HTTPS | Obrigatório em produção (`--https-only`, HTTP redirecionado com 301); fornecido pela plataforma | `deploy.sh` |
 
 Limitação conhecida: o token fica no `localStorage`, acessível por JavaScript. O risco é reduzido porque o React
 escapa todo o texto apresentado e a aplicação nunca injeta HTML de utilizadores.
@@ -306,12 +306,12 @@ linha temporal sem refresh. No cliente, cada `socket.on` tem o `socket.off` corr
 
 ## 8. Cloud
 
-_(Rever depois de publicar; os comandos estão em `deploy.sh`.)_
+Publicado no Azure (subscrição Azure for Students, região Denmark East) com o script `deploy.sh`.
 
 | Componente | Serviço | Modelo | Justificação |
 |---|---|---|---|
-| API + Socket.io | Azure App Service (Linux, B1, Node 20) | PaaS | Publica-se o código; a plataforma trata do runtime, do sistema operativo, do HTTPS e da escala. O plano B1 suporta WebSockets sem os limites do F1 |
-| SPA | Azure Static Web Apps (Free) | PaaS | Ficheiros estáticos com CDN e HTTPS incluídos; `navigationFallback` devolve `index.html` nas rotas da SPA |
+| API + Socket.io | Azure App Service (Linux, B1, Node 22) | PaaS | Publica-se o código; a plataforma trata do runtime, do sistema operativo, do HTTPS e da escala. O plano B1 suporta WebSockets sem os limites do F1 |
+| SPA | Azure App Service (segunda Web App no mesmo plano) | PaaS | Ficheiros estáticos do build servidos com fallback para `index.html`, para as rotas da SPA funcionarem depois de F5; HTTPS incluído; sem custo adicional por partilhar o plano |
 | Base de dados | MongoDB Atlas (M0) | DBaaS | Base de dados gerida, com réplicas e backups, sem administrar servidores; gratuita |
 | Imagens | Azure Blob Storage (Standard LRS) | Storage gerido (BaaS) | Paga-se só o que se guarda; a API fica sem estado em disco, o que permite várias instâncias |
 
@@ -320,14 +320,25 @@ benefício para este projeto. A API não guarda estado local (sessões em JWT, i
 dados), por isso pode escalar horizontalmente; o fecho dos leilões já está preparado para várias instâncias. Para o
 broadcast do Socket.io entre instâncias seria preciso acrescentar um adaptador (por exemplo, Redis).
 
-**Configuração.** Segredos nas App Settings (`MONGODB_URI`, `JWT_SECRET`, `STORAGE_CONN`, `CLIENT_URL`), WebSockets
-ativos, HTTPS obrigatório, acesso de rede autorizado no Atlas.
+**Desvio em relação ao guia.** O guia sugere o Azure Static Web Apps para a SPA. Esse serviço só existe em cinco
+regiões e a política da subscrição Azure for Students não permitiu nenhuma delas; a SPA ficou por isso numa segunda
+Web App do App Service, que é igualmente PaaS. Perde-se a CDN global das Static Web Apps, o que não é relevante para
+uma aplicação regional.
 
-**Custos (CapEx vs OpEx).** Não há investimento inicial em servidores (CapEx); paga-se pelo uso (OpEx): Atlas M0 e
-Static Web Apps gratuitos, App Service B1 coberto pelos créditos Azure for Students, Blob Storage a cêntimos por GB.
-_(Confirmar os valores na calculadora de preços do Azure à data da entrega.)_
+**Configuração.** Segredos nas App Settings (`MONGODB_URI`, `JWT_SECRET`, `STORAGE_CONN`, `CLIENT_URL`), nunca no
+repositório; `JWT_SECRET` de produção diferente do de desenvolvimento; WebSockets ativos; HTTPS obrigatório (os pedidos
+HTTP são redirecionados com 301); CORS restrito à origem da SPA; acesso de rede autorizado no Atlas.
 
-**URLs públicos:** _(aplicação)_ · _(API /api/health)_ · _(Swagger UI)_
+**Verificação em produção.** O teste de ponta a ponta foi executado contra o URL público da API
+(`API_URL=https://dcm-api-333342.azurewebsites.net npm test`): 57/57 verificações, incluindo as licitações simultâneas por WebSocket. Foram também
+confirmados o catálogo na SPA publicada, uma rota interna depois de F5 (`/leiloes` → 200), a Swagger UI e o upload de
+uma fotografia, que criou um blob público no container `produtos`.
+
+**Custos (CapEx vs OpEx).** Não há investimento inicial em servidores (CapEx); paga-se pelo uso (OpEx): Atlas M0
+gratuito, App Service B1 coberto pelos créditos Azure for Students (um só plano para as duas Web Apps), Blob Storage a
+cêntimos por GB. _(Confirmar os valores na calculadora de preços do Azure à data da entrega.)_
+
+**URLs públicos:** https://dcm-web-333342.azurewebsites.net · https://dcm-api-333342.azurewebsites.net/api/health · https://dcm-api-333342.azurewebsites.net/api-docs
 
 ## 9. Dificuldades
 
@@ -340,6 +351,9 @@ _(Rever e completar com a experiência do autor.)_
   por um arredondamento aos cêntimos antes de serem comparados.
 - **Presença ao desligar.** No evento `disconnecting` o socket ainda está nas salas; foi preciso guardar as salas e
   emitir a presença só depois do `disconnect`.
+- **Regiões do Azure for Students.** A subscrição só permite cinco regiões: uma não aceitava novos clientes, três
+  não tinham quota para o plano B1 e só Denmark East funcionou. As Static Web Apps não existem em nenhuma delas, o
+  que obrigou a servir a SPA pelo App Service. Foi também preciso registar o fornecedor `Microsoft.Storage`.
 - **YAML da especificação.** Uma descrição com vírgula dentro de um mapa em linha (`{ description: a, b }`) fazia a
   API falhar ao arrancar; as descrições com vírgulas passaram a estar entre aspas.
 - **Pesquisa por produtor.** Pesquisar "mel" devolve também os produtos do produtor "Mel do Soajo"; é o

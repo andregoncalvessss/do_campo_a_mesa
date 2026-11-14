@@ -8,3 +8,5 @@ api.zip
 .mongo-dados/
 .logs/
 .claude/
+.deploy-sufixo
+web.zip
