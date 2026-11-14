@@ -1,0 +1,39 @@
+// Paleta do tema (usada em toda a aplicação: nenhuma cor "solta" repetida)
+$verde: #2F5D3A;
+$verde-escuro: #24482D;
+$verde-claro: #DDE8D6;
+$terracota: #A94A26;
+$terracota-claro: #F5DDD0;
+$ambar: #C98A1B;
+$ambar-claro: #FAEFD0;
+$fundo: #F5F1E8;
+$tinta: #1F2A1F;
+$tinta-suave: #5E665B;
+$linha: #E4DDCD;
+$branco: #fff;
+
+// Variáveis do Bootstrap (têm de ser definidas ANTES de o importar)
+$primary: $verde;
+$success: $verde;
+$danger: #A3281C;
+$warning: $ambar;
+$body-bg: $fundo;
+$body-color: $tinta;
+$border-color: $linha;
+$border-radius: .75rem;
+$border-radius-sm: .5rem;
+$border-radius-lg: 1rem;
+$card-border-color: $linha;
+$font-family-sans-serif: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+$headings-font-weight: 600;
+$link-color: $verde;
+$link-decoration: none;
+$enable-shadows: false;
+$input-bg: $branco;
+$form-select-bg: $branco;
+
+// Breakpoints próprios (Mobile First)
+$breakpoints: (md: 768px, lg: 1024px, xl: 1280px);
+
+// Altura da barra de navegação inferior (telemóvel)
+$altura-nav-inferior: 3.75rem;

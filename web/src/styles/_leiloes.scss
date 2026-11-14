@@ -1,0 +1,107 @@
+// Leilões: cartão de destaque, sala em direto e licitações
+
+.em-direto {
+  @include rotulo($branco);
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .65rem;
+  border-radius: 2rem;
+  background: $danger;
+  &::before { content: ""; @include ponto($branco, .4rem); animation: pulsar 1.4s infinite; }
+  &--agendado { background: $ambar; &::before { animation: none; } }
+  &--terminado { background: $tinta-suave; &::before { display: none; } }
+}
+@keyframes pulsar { 50% { opacity: .25; } }
+
+.cartao-leilao {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  padding: 1.25rem;
+  border-radius: $border-radius-lg;
+  background: $verde-escuro;
+  color: $branco;
+
+  h2, h3 { @include serif; font-size: 1.15rem; margin: 0; color: $branco; }
+  .texto-secundario { color: rgba($branco, .7); }
+  &__numeros { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  &__numero {
+    padding: .6rem .75rem;
+    border-radius: $border-radius;
+    background: rgba($branco, .1);
+    small { display: block; font-size: .6875rem; color: rgba($branco, .7); }
+    strong { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
+  }
+  .btn { background: $fundo; border-color: $fundo; color: $tinta; font-weight: 600; }
+}
+
+.sala {
+  display: grid;
+  gap: 1.25rem;
+  @include a-partir-de(lg) { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 2rem; align-items: start; }
+
+  &__imagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
+    max-height: 22rem;
+    width: 100%;
+    border-radius: $border-radius-lg;
+    background: $verde-claro;
+    color: $verde;
+    object-fit: cover;
+  }
+  &__factos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem;
+    @include a-partir-de(md) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    > div { @include cartao; padding: .6rem .75rem; border-radius: $border-radius; }
+    strong { display: block; font-size: .9375rem; }
+  }
+  // No desktop o painel de licitação acompanha o scroll
+  &__painel { display: grid; gap: 1rem; @include a-partir-de(lg) { position: sticky; top: 5rem; } }
+}
+
+.contagem {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  color: $terracota;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.contagem__barra {
+  height: .25rem;
+  border-radius: 1rem;
+  background: $linha;
+  overflow: hidden;
+  > div { height: 100%; background: $terracota; transition: width 1s linear; }
+}
+
+.licitacao-atual {
+  padding: .85rem 1rem;
+  border-radius: $border-radius;
+  background: $fundo;
+  strong { display: block; font-size: 1.75rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+}
+
+.licitacoes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .5rem .6rem;
+    border-radius: $border-radius-sm;
+    font-size: .875rem;
+    font-variant-numeric: tabular-nums;
+    &:first-child { background: $verde-claro; font-weight: 600; }
+    > :last-child { margin-left: auto; font-weight: 700; }
+  }
+}

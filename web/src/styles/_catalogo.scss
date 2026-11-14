@@ -1,0 +1,128 @@
+// Catálogo: herói, filtros, grelha Mobile First e cartão de produto
+
+.heroi {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  @include a-partir-de(lg) { grid-template-columns: 3fr 2fr; align-items: center; gap: 2.5rem; margin-bottom: 2rem; }
+
+  h1 { font-size: 1.75rem; line-height: 1.15; @include a-partir-de(md) { font-size: 2.5rem; } }
+}
+
+.filtros {
+  display: grid;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+
+// No telemóvel as categorias deslizam na horizontal em vez de partir a linha
+.categorias {
+  display: flex;
+  gap: .4rem;
+  overflow-x: auto;
+  padding-bottom: .25rem;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  @include a-partir-de(md) { flex-wrap: wrap; overflow: visible; }
+
+  .btn { white-space: nowrap; border-radius: 2rem; background: $branco; border-color: $linha; color: $tinta; font-size: .875rem; }
+  .btn.ativo { background: $tinta; border-color: $tinta; color: $branco; }
+}
+
+.filtros__opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem 1rem;
+  font-size: .875rem;
+  .form-select, .form-control { width: auto; }
+  .campo-preco { width: 5.5rem; }
+}
+
+.grelha-produtos {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); // telemóvel: 2 colunas
+  @include a-partir-de(md) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  @include a-partir-de(xl) { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+}
+
+.grelha-leiloes {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  @include a-partir-de(md) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @include a-partir-de(xl) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.cartao-produto {
+  overflow: hidden;
+  border-radius: $border-radius-lg;
+
+  &__foto, &__imagem { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  &__imagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span { @include serif; font-size: 2.5rem; opacity: .8; @include a-partir-de(md) { font-size: 3rem; } }
+  }
+  .card-body { padding: .75rem; @include a-partir-de(md) { padding: 1rem; } }
+  .preco { color: $verde; font-weight: 700; }
+  .btn { font-size: .8125rem; @include a-partir-de(md) { font-size: .9375rem; } }
+}
+
+.etiqueta {
+  @include rotulo($verde-escuro);
+  padding: .15rem .45rem;
+  border-radius: .35rem;
+  background: $verde-claro;
+  &--esgotado { background: $terracota-claro; color: $terracota; }
+  &--neutra { background: $fundo; color: $tinta-suave; border: 1px solid $linha; }
+}
+
+// Uma cor por categoria (mapa SASS + @each)
+$cores-categoria: (
+  horticolas: (#CFE3CA, #335F2F),
+  fruta: (#DCE6C3, #4E6B22),
+  mel: (#F3DDA3, #86590C),
+  vinho: (#E6D3DE, #6E3353),
+  queijo: (#F1E6C4, #7F6420),
+  padaria: (#EADBC0, #7A5427),
+  outros: (#E2CDB9, #6B4123)
+);
+@each $nome, $cores in $cores-categoria {
+  .cat-#{$nome} { background: nth($cores, 1); color: nth($cores, 2); }
+}
+
+// Página pública do produtor
+.produtor__capa {
+  height: 7rem;
+  margin: -1.25rem -0.75rem 0;
+  background: repeating-linear-gradient(-8deg, $ambar-claro 0 1.1rem, darken($ambar-claro, 4%) 1.1rem 1.2rem);
+  @include a-partir-de(md) { height: 10rem; margin-inline: 0; border-radius: $border-radius-lg; }
+}
+.produtor__topo { margin-top: -1.75rem; padding-inline: .25rem; @include a-partir-de(md) { padding-inline: 1.25rem; } }
+.produtor__colunas {
+  display: grid;
+  gap: 1.5rem;
+  @include a-partir-de(lg) { grid-template-columns: 2fr 3fr; align-items: start; }
+}
+.mapa {
+  width: 100%;
+  height: 14rem;
+  border: 1px solid $linha;
+  border-radius: $border-radius-lg;
+  @include a-partir-de(lg) { height: 18rem; }
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .3rem .7rem;
+  border-radius: 2rem;
+  border: 1px solid $linha;
+  background: $branco;
+  font-size: .8125rem;
+  font-weight: 600;
+  &--verde { background: $verde-claro; border-color: $verde-claro; color: $verde-escuro; }
+}

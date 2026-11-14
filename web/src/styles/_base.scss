@@ -1,0 +1,142 @@
+// Estrutura geral, tipografia e navegação
+
+h1, h2, .titulo { @include serif; }
+
+body { min-height: 100vh; }
+
+.texto-secundario { color: $tinta-suave; }
+.rotulo { @include rotulo; }
+.rotulo--terracota { @include rotulo($terracota); }
+
+.cartao { @include cartao; padding: 1rem; @include a-partir-de(md) { padding: 1.25rem; } }
+
+// Deixa espaço para a barra inferior no telemóvel
+.pagina {
+  padding-top: 1.25rem;
+  padding-bottom: calc(#{$altura-nav-inferior} + 1.5rem);
+  @include a-partir-de(lg) { padding-top: 2rem; padding-bottom: 3rem; }
+}
+
+.cabecalho {
+  background: $branco;
+  border-bottom: 1px solid $linha;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.marca {
+  @include serif;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  color: $tinta;
+  font-size: 1.1rem;
+  svg { color: $verde; }
+}
+
+.navbar .nav-link {
+  color: $tinta;
+  font-weight: 500;
+  &.active { color: $verde; text-decoration: underline; text-underline-offset: .4rem; text-decoration-thickness: 2px; }
+}
+
+.contador {
+  display: inline-block;
+  min-width: 1.25rem;
+  padding: 0 .35rem;
+  border-radius: 1rem;
+  background: $terracota;
+  color: $branco;
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+// Barra de navegação inferior: só no telemóvel (o desktop usa a navbar)
+.nav-inferior {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 1030;
+  display: flex;
+  height: $altura-nav-inferior;
+  background: $branco;
+  border-top: 1px solid $linha;
+  @include a-partir-de(lg) { display: none; }
+
+  a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .15rem;
+    position: relative;
+    color: $tinta-suave;
+    font-size: .6875rem;
+    &.active { color: $verde; font-weight: 700; }
+    .contador { position: absolute; top: .35rem; left: 55%; }
+  }
+}
+
+.rodape {
+  border-top: 1px solid $linha;
+  color: $tinta-suave;
+  font-size: .8125rem;
+  padding: 1rem 0 calc(#{$altura-nav-inferior} + 1rem);
+  @include a-partir-de(lg) { padding-bottom: 1rem; }
+}
+
+// Notificações em tempo real (toasts)
+.notificacoes {
+  position: fixed;
+  z-index: 1080;
+  inset: auto .75rem calc(#{$altura-nav-inferior} + .75rem) .75rem;
+  display: grid;
+  gap: .5rem;
+  @include a-partir-de(md) { inset: auto 1.25rem 1.25rem auto; width: 22rem; }
+  @include a-partir-de(lg) { bottom: 1.25rem; }
+}
+
+.notificacao {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  padding: .85rem 1rem;
+  border-radius: $border-radius-lg;
+  background: $verde-escuro;
+  color: $branco;
+  box-shadow: 0 .5rem 1.5rem rgba($tinta, .25);
+  animation: entrar .25s ease-out;
+  a { color: $verde-claro; text-decoration: underline; }
+  .btn-close { filter: invert(1); margin-left: auto; flex-shrink: 0; }
+}
+
+@keyframes entrar { from { opacity: 0; transform: translateY(.5rem); } }
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: $terracota;
+  color: $branco;
+  font-size: .8rem;
+  font-weight: 700;
+  &--quadrado { border-radius: $border-radius-sm; width: 3.5rem; height: 3.5rem; font-size: 1.2rem; @include serif; }
+  &--pequeno { width: 1.75rem; height: 1.75rem; font-size: .65rem; }
+}
+
+.estrelas { color: $ambar; white-space: nowrap; letter-spacing: .05em; }
+.estrelas__vazia { color: $linha; }
+
+.formulario-estreito { max-width: 30rem; margin-inline: auto; }
+
+// Respeita quem desativa animações no sistema
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

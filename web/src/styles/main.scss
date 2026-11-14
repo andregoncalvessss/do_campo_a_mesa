@@ -1,0 +1,8 @@
+// Ordem: variáveis -> Bootstrap -> mixins -> parciais da aplicação
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+@import 'mixins';
+@import 'base';
+@import 'catalogo';
+@import 'leiloes';
+@import 'paineis';
