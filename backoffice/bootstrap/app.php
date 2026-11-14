@@ -12,6 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Atrás do proxy HTTPS da plataforma (App Service): confia nos cabeçalhos X-Forwarded-*
+        $middleware->trustProxies(at: '*');
         $middleware->alias(['admin' => \App\Http\Middleware\EnsureAdmin::class]);
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('painel'));

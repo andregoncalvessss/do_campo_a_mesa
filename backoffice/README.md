@@ -44,6 +44,16 @@ Entrar com `admin@exemplo.pt` / `password123` (depois de `npm run seed` na API).
 php artisan test
 ```
 
+## Publicação
+
+Publicado em https://dcm-admin-333342.azurewebsites.net (Azure App Service, PHP 8.5). A partir da raiz do repositório, depois de `./deploy.sh`:
+
+```bash
+./deploy-backoffice.sh
+```
+
+Os ficheiros `deploy/nginx.conf` e `deploy/startup.sh` configuram o servidor no Azure.
+
 ## Notas
 
 - Não há migrações: o esquema é definido pelos modelos Mongoose da API.

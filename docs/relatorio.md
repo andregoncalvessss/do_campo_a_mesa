@@ -338,7 +338,7 @@ uma fotografia, que criou um blob público no container `produtos`.
 gratuito, App Service B1 coberto pelos créditos Azure for Students (um só plano para as duas Web Apps), Blob Storage a
 cêntimos por GB. _(Confirmar os valores na calculadora de preços do Azure à data da entrega.)_
 
-**URLs públicos:** https://dcm-web-333342.azurewebsites.net · https://dcm-api-333342.azurewebsites.net/api/health · https://dcm-api-333342.azurewebsites.net/api-docs
+**URLs públicos:** https://dcm-admin-333342.azurewebsites.net (backoffice) · https://dcm-web-333342.azurewebsites.net · https://dcm-api-333342.azurewebsites.net/api/health · https://dcm-api-333342.azurewebsites.net/api-docs
 
 ## 9. Dificuldades
 
@@ -400,7 +400,12 @@ uma avaliação ocultada no backoffice deixa de aparecer na página pública e d
 **Limitações.** Como o backoffice escreve diretamente na base de dados, não emite os eventos Socket.io da API (por
 exemplo, `conta-validada`): o produtor vê a validação quando a aplicação atualiza a sessão. As regras de validação
 dos dados continuam definidas nos schemas Mongoose, por isso o backoffice só faz alterações simples de estado.
-_(O backoffice ainda não está publicado na Cloud; se for publicado, acrescentar o URL e o serviço usado na secção 8.)_
+**Publicação.** O backoffice está publicado em https://dcm-admin-333342.azurewebsites.net, numa terceira Web App (PHP 8.5, nginx + PHP-FPM)
+do mesmo plano do App Service, com o script `deploy-backoffice.sh`. A configuração (`APP_KEY`, `MONGODB_URI`, …) está
+nas App Settings; um script de arranque aponta o nginx para a pasta `public/` do Laravel e cria as pastas de escrita.
+O `TrustProxies` foi ativado para o Laravel gerar URLs HTTPS atrás do proxy da plataforma, e o cookie de sessão só é
+enviado por HTTPS. Em produção foi confirmado que o administrador entra, que um comprador é recusado, que todas as
+páginas respondem e que o ficheiro `.env` não é servido (403).
 
 ## Anexo: como correr
 

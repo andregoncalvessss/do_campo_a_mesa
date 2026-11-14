@@ -8,6 +8,7 @@ Trabalho prático individual de **Desenvolvimento Web e para a Cloud** (Mestrado
 | Aplicação (SPA) | https://dcm-web-333342.azurewebsites.net |
 | API | https://dcm-api-333342.azurewebsites.net/api/health |
 | Documentação Swagger | https://dcm-api-333342.azurewebsites.net/api-docs |
+| Backoffice Laravel | https://dcm-admin-333342.azurewebsites.net (só administradores) |
 | Relatório | [docs/relatorio.md](docs/relatorio.md) |
 
 ## Arquitetura
@@ -163,6 +164,7 @@ Publicado com [deploy.sh](deploy.sh) (Azure CLI), na região Denmark East:
 |---|---|---|
 | `dcm-api-…` | App Service (Linux, B1, Node 22) | API REST + Socket.io, com WebSockets e HTTPS obrigatório |
 | `dcm-web-…` | App Service, no mesmo plano | SPA (ficheiros estáticos do `dist/`, com fallback para `index.html`) |
+| `dcm-admin-…` | App Service (PHP 8.5), no mesmo plano | Backoffice Laravel; publicado com [deploy-backoffice.sh](deploy-backoffice.sh) |
 | `dcmimagens…` | Storage account, container `produtos` | Fotografias dos produtos |
 | MongoDB Atlas (M0) | fora do Azure | Base de dados |
 
